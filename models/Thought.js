@@ -15,6 +15,11 @@ const reactionSchema = new Schema({
     username: {
       type: String,
       required: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: createdAtVal => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
     }
 
 },
@@ -32,8 +37,26 @@ const thoughtSchema = new Schema({
   thoughtText: {
     type: String,
     required: true,
-  }
-})
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    get: createdAtVal => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
+  },
+  username: {
+    type: String,
+    required: true
+  },
+  reactions: [reactionSchema]
+},
+{
+  toJSON: {
+    virtuals: true,
+    getters: true
+  },
+  id: false
+}
+);
 
 const Thought = model('Thought', thoughtSchema);
 
