@@ -18,7 +18,7 @@ module.exports = {
   },
   // Get a thought
   getSingleThought(req, res) {
-    Thought.findOne({ _id: req.params.thoughtId })
+    Thought.findOne({ _id: req.thoughtId })
       .populate({
         path: "reactions",
         select: "-__v",
@@ -58,14 +58,14 @@ module.exports = {
   },
   // Delete a thought
   deleteThought(req, res) {
-    Thought.findOneAndDelete({ _id: req.params.ThoughtId })
+    Thought.findOneAndDelete({ _id: req.ThoughtId })
       .then((dbThoughtData) => {
         if(!dbThoughtData){
           return res.status(404).json({message: "No match!"});
         };
         return User.findOneAndUpdate(
-          {thoughts: params.id},
-          {$pull: {thoughts: params.id}},
+          {thoughts: req.id},
+          {$pull: {thoughts: req.id}},
           {new: true}
         );
       })
@@ -83,7 +83,7 @@ module.exports = {
   // Update a thought
   updateThought(req, res) {
     Thought.findOneAndUpdate(
-      { _id: req.params.ThoughtId },
+      { _id: req.ThoughtId },
       { $set: req.body },
       { runValidators: true, new: true }
     )
@@ -97,6 +97,38 @@ module.exports = {
       .catch(err => res.json(err));
   },
   createReaction(req,res){
-    
-  }
+    Thought.findOneAndUpdate(
+      {_id: req.ThoughtId},
+      {$push: {reactions: body}},
+      {new: true, runValidators: true}
+    )
+    .populate({path: 'reactions', select: '-__v'})
+    .select('-__v')
+    .then((dbThoughtData) => {
+      if(!dbThoughtData){
+        res.status(404).json({message: "NO ID with this thought!"});
+        return;
+      }
+      res.json(dbThoughtData);
+    })
+    .catch(err => res.status(400).json(err))
+  },
+
+deleteReaction(req,res){
+  Thought.findOneAndUpdate(
+    {_id: req.thoughtId},
+    {$pull: {reactions: {reactionId: req.reactionId}}},
+    {new: true}
+  )
+    .then((dbThoughtData) => {
+      if(!dbThoughtData){
+        res.status(404).json({message: "You got nothing!"});
+        return;
+      }
+      res.json(dbThoughtData);
+    })
+    .catch(err => res.json(err));
 }
+};
+
+module.exports = thoughtController
