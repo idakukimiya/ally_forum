@@ -1,55 +1,102 @@
-const { Course, Student } = require('../models');
+const { Thought, User } = require('../models');
 
 module.exports = {
-  // Get all courses
-  getCourses(req, res) {
-    Course.find()
-      .then((courses) => res.json(courses))
-      .catch((err) => res.status(500).json(err));
-  },
-  // Get a course
-  getSingleCourse(req, res) {
-    Course.findOne({ _id: req.params.courseId })
-      .select('-__v')
-      .then((course) =>
-        !course
-          ? res.status(404).json({ message: 'No course with that ID' })
-          : res.json(course)
-      )
-      .catch((err) => res.status(500).json(err));
-  },
-  // Create a course
-  createCourse(req, res) {
-    Course.create(req.body)
-      .then((course) => res.json(course))
+  // Get all thought
+  getThought(req, res) {
+    Thought.find({})
+      .populate({
+        path: "reactions",
+        select: "-__v",
+      })
+      .select("-__v")
+      .sort({_id: -1})
+      .then((dbThoughtData) => res.json(dbThoughtData))
       .catch((err) => {
         console.log(err);
-        return res.status(500).json(err);
+        res.sendStatus(400);
       });
   },
-  // Delete a course
-  deleteCourse(req, res) {
-    Course.findOneAndDelete({ _id: req.params.courseId })
-      .then((course) =>
-        !course
-          ? res.status(404).json({ message: 'No course with that ID' })
-          : Student.deleteMany({ _id: { $in: course.students } })
-      )
-      .then(() => res.json({ message: 'Course and students deleted!' }))
-      .catch((err) => res.status(500).json(err));
+  // Get a thought
+  getSingleThought(req, res) {
+    Thought.findOne({ _id: req.params.thoughtId })
+      .populate({
+        path: "reactions",
+        select: "-__v",
+      })
+      .select('-__v')
+      .then((dbThoughtData) => {
+        if(!dbThoughtData) {
+          return res.status(404).json({message: "NO ID with this thought!"});
+        }
+        res.json(dbThoughtData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });  
+    },
+
+  // Create a thought
+  createThought(req, res) {
+    Thought.create(req.body)
+    .then(({_id}) => {
+      return User.findOneAndUpdate(
+        {_id: body.userId},
+        {$push: {thoughts: _id}},
+        {new: true}
+      );
+    })
+    .then((dbUserData) => {
+      if(!dbUserData){
+        return res
+          .status(404)
+          .json({message: "NO ID with this user, Thought created!"})
+      }
+      res.json({message: "Successfully created Thought!!"});
+    })
+    .catch((err) => res.json(err));
   },
-  // Update a course
-  updateCourse(req, res) {
-    Course.findOneAndUpdate(
-      { _id: req.params.courseId },
+  // Delete a thought
+  deleteThought(req, res) {
+    Thought.findOneAndDelete({ _id: req.params.ThoughtId })
+      .then((dbThoughtData) => {
+        if(!dbThoughtData){
+          return res.status(404).json({message: "No match!"});
+        };
+        return User.findOneAndUpdate(
+          {thoughts: params.id},
+          {$pull: {thoughts: params.id}},
+          {new: true}
+        );
+      })
+      .then((dbUserData)=> {
+        if(!dbUserData){
+          return res
+            .status(400)
+            .json({message: "NO ID with this user but thought created!"})
+        }
+        res.json({message: "Successfully deleted thought!"})
+      })
+      .catch((err) => res.json(err));
+    },
+
+  // Update a thought
+  updateThought(req, res) {
+    Thought.findOneAndUpdate(
+      { _id: req.params.ThoughtId },
       { $set: req.body },
       { runValidators: true, new: true }
     )
-      .then((course) =>
-        !course
-          ? res.status(404).json({ message: 'No course with this id!' })
-          : res.json(course)
-      )
-      .catch((err) => res.status(500).json(err));
+      .then((dbThoughtData) => {
+        if(!dbThoughtData){
+          res.status(404).json({message: "No match"});
+          return;
+        }
+        res.json(dbThoughtData);
+      })
+      .catch(err => res.json(err));
   },
-};
+  createReaction(req,res){
+    
+  }
+}

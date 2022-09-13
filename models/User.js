@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
-// timestamp
-const moment = require('moment');
+
 
 const userSchema = new Schema(
   {
