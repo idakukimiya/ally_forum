@@ -1,13 +1,25 @@
 {
   "name": "ally_forum",
   "version": "1.0.1",
-  "description": "Mongoose back-end project - Develop",
+  "description": "18. NoSQL Challenge",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\"&& exit 1",
-    "start": "node server.js"
-    
+    "start": "node server.js"  
   },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idakukimiya/ally_forum.git"
+  },
+
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/idakukimiya/ally_forum/issues"
+  },
+
+  "homepage": "https://github.com/idakukimiya/ally_forum#readme",
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^6.0.13"
