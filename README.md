@@ -8,7 +8,7 @@
 
 [Links to Project](#links-to-project)
 
-[Installation](#installation)
+[Technology](#technology)
 
 [Tests](#tests)
 
@@ -38,15 +38,25 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 
 ### Walkthrough Videos
 
-[User Routes]("!")
+[User Routes](https://drive.google.com/file/d/1AuuwwOJoYhh7HY-ZdaNzWLrbiBNciEMw/view)
 
 [Friend Routes]("!")
 
-[Thought Routes]("!")
+[Thought Routes](https://drive.google.com/file/d/1ea-2vtla33wOrO-XbhT9UyUC6-CA5BIK/view)
 
 [Reaction Routes]("!")
 
-## Installation
+## Technology
+
+* Javascript
+
+* Node.js
+
+* Express.js
+
+* MongoDB
+
+* Mongoose
 
 ## Tests
 
