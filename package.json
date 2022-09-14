@@ -1,20 +1,16 @@
 {
-  "name": "28-Stu_Mini-Project",
+  "name": "ally_forum",
   "version": "1.0.1",
   "description": "Mongoose back-end project - Develop",
-  "main": "index.js",
-  "license": "MIT",
+  "main": "server.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index",
-    "seed": "node utils/seed",
-    "heroku-postbuild": "node utils/seed.js"
+    "test": "echo \"Error: no test specified\"&& exit 1",
+    "start": "node server.js"
+    
   },
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^6.0.13"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.9"
   }
 }
+
