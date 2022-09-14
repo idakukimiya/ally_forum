@@ -131,4 +131,4 @@ deleteReaction(req,res){
 }
 };
 
-module.exports = thoughtController
+module.exports = ThoughtController
