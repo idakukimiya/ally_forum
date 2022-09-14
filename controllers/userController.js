@@ -49,7 +49,7 @@ const userController = {
 
   // upate User
 updateUser(req,res){
-  User.findOneAndUpdate({_id: req.id}, body, {new: true, runValidators:true})
+  User.findOneAndUpdate({_id: req.id}, req.body, {new: true, runValidators:true})
     .then((dbUserData) => {
       if(!dbUserData){
         res.status(404).json({message: "NO ID for this user!"});
@@ -74,14 +74,14 @@ updateUser(req,res){
       .then(() => {
         res.json({message: "Deleted!"})
       })
-      .catch((err) => res.json(err));
+      .catch(err => res.json(err));
     },
 
 // add friend
 addFriend(req,res) {
   User.findOneAndUpdate(
     {_id: req.userId},
-    {$addToSet: {friends: req.friendId}},
+    {$push: {friends: req.friendId}},
     {new: true, runValidators: true}
   )
   .then((dbUserData) => {
@@ -95,7 +95,7 @@ addFriend(req,res) {
 },
 
 //delete friend
-removeFriend(req, res){
+deleteFriend(req, res){
   User.findOneAndUpdate(
     {_id:  req.userId},
     {$pull: {friends: req.friendId}},

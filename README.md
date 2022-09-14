@@ -34,7 +34,7 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 
 ## Links to Project
 
-[GitHub URL to Project]("!")
+[GitHub URL to Project](https://github.com/idakukimiya/ally_forum)
 
 ### Walkthrough Videos
 
