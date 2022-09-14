@@ -1,6 +1,6 @@
 const { Thought, User } = require('../models');
 
-module.exports = {
+const thoughtController = {
   // Get all thought
   getThought(req, res) {
     Thought.find({})
@@ -131,4 +131,4 @@ deleteReaction(req,res){
 }
 };
 
-module.exports = ThoughtController
+module.exports = thoughtController
