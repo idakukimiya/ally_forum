@@ -45,8 +45,21 @@ const userController = {
     User.create(req.body)
     .then((dbUserData) => res.json(dbUserData))
     .catch((err) => res.json(err));
-
   },
+
+  // upate User
+updateUser(req,res){
+  User.findOneAndUpdate({_id: req.id}, body, {new: true, runValidators:true})
+    .then((dbUserData) => {
+      if(!dbUserData){
+        res.status(404).json({message: "NO ID for this user!"});
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch(err => res.json(err));
+},
+
   // Delete a user
   deleteUser(req, res) {
     User.findOneAndDelete({ _id: req.UserId })
